@@ -1,0 +1,9 @@
+set terminal pdf
+set output "./plots/er-bidirectional/DEGREE_DISTRIBUTION/dd-outDegreeDistribution.pdf"
+set key right top
+set title "Out-Degree Distribution"
+set xlabel "Out-Degree d_{out}"
+set ylabel "P(X = d_{out})"
+set logscale xy
+set grid
+plot './data/ERDOS_RENYI-100-5.0-true/DEGREE_DISTRIBUTION/dd-outDegreeDistribution.txt' using ($1 + 0.0):($2 + 0.0) with linespoint lt 1 lw 1 title "ER(N=100,ad=5.0,b=true)"

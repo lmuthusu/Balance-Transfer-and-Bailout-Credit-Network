@@ -1,0 +1,8 @@
+set terminal pdf
+set output "./plots/er-bidirectional/DEGREE_DISTRIBUTION/dd-inDegreeDistribution-cdf.pdf"
+set key right bottom
+set title "In-Degree Distribution (CDF)"
+set xlabel "In-Degree d_{in}"
+set ylabel "P(X leq d_{in})"
+set grid
+plot './data/ERDOS_RENYI-100-5.0-true/DEGREE_DISTRIBUTION/dd-inDegreeDistribution-cdf.txt' using ($1 + 0.0):($2 + 0.0) with linespoint lt 1 lw 1 title "ER(N=100,ad=5.0,b=true)"

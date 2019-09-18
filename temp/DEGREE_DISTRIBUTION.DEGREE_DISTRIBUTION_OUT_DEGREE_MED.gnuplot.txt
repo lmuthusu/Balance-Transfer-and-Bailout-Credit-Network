@@ -1,0 +1,7 @@
+set terminal pdf
+set output "./plots/er-singles/DEGREE_DISTRIBUTION/dd-outDegree-med.pdf"
+set title "Median Out-Degree"
+set xlabel "Nodes"
+set ylabel "med(d_{out})"
+set grid
+plot './temp/DEGREE_DISTRIBUTION.DEGREE_DISTRIBUTION_OUT_DEGREE_MED.data.0.txt' using ($1 + 0.0):($2 + 0.0) with linespoint lt 1 lw 1 title "ER(N=X,ad=5.0,b=true)"
