@@ -3,7 +3,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.Map;
@@ -37,6 +37,12 @@ import java.util.Random;
 import gtna.transformation.spanningtree.BFS;
 import gtna.graph.Node;
 import treeembedding.treerouting.Treeroute;
+import java.io.IOException;
+import java.text.ParseException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+
 
 
 
@@ -45,7 +51,7 @@ public class balancetrans {
 	public static void main(String[] args) {
 		
 		Config.overwrite("SKIP_EXISTING_DATA_FOLDER", "false");
-		String path = "/Users/lalitha/Documents/data_test/";
+		String path = "/Documents/data_test/";
 		
 		
 		// GTNA.example1();
@@ -54,33 +60,59 @@ public class balancetrans {
 		// GTNA.example4();
 		// GTNA.example5();
 		// GTNA.example6();
+		Instant start = Instant.now();
+		//Setup network, create spanning tree
 		Graph graph = balancetrans.example7();
 		Random rand = null;
 		Treeroute rs;
 
-	   // HashMap<Edge, Double> weights;
-	    //double weight;
-		//double defaultWeight;
-		//Edge[] edges = graph.generateEdges();
-		//EdgeWeights EdgeWeights(edges, weight, defaultWeight);
-		
-		//String graph = "./data/firstExample-graph1.txt";
-		//String resAdd =  "./data/firstExample-graph2.txt";
-		//String resGraph = "./data/hashmap";
-		//String add = "./data/ripple_links_history.txt";
-		//String name = "./data/RIPPLEJan29";
-		//toAddList(graph, resAdd+".txt", map);
-		//HashMap<String, Integer> map = turnGraphs(resAdd, resGraph+".graph", name);
-		//boolean roots = false;
-		//Transformation TBFS =  new BFS();
-	 	//Graph g3 = TBFS.transform(graph);
 		Treeembedding embeed = new Treeembedding("T",5);
 		Graph g2 = embeed.transform(graph);
 		Node[] n = g2.getNodes();
+		Instant finish = Instant.now();
+		long timeElapsed = Duration.between(start, finish).toMillis();  //in millis
+		System.out.println("Time Elapsed for setup, spanning tree:"+timeElapsed);
+		
+		Instant start1 = Instant.now();
+		// Broadcast Message
+		String text = "Node 23, 100";
+		BufferedWriter writer;
+		try {
+		writer = new BufferedWriter(new FileWriter("./data/Mesage.txt"));
+		writer.write(text);
+		writer.close();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		Instant finish1 = Instant.now();
+		long timeElapsed1 = Duration.between(start1, finish1).toNanos();
+		System.out.println("Time Elapsed for Broadcast:"+timeElapsed1);
+		
+		// FindRoute and Reply
+		Instant start2 = Instant.now();
+		String text1 = "997, 100";
+		BufferedWriter writer1;
+		try {
+		writer1 = new BufferedWriter(new FileWriter("./data/Mesageto23.txt"));
+		writer1.write(text1);
+		writer1.close();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
 		Treeroute d = new TreerouteTDRAP();
-		int[] x = d.getRoute(2, 996, 0, g2, n);
+		int[] x = d.getRoute(997, 100, 0, g2, n);
 		new GtnaGraphWriter().writeWithProperties(g2, "./data/firstExample-graph2.graph");
-		//new GtnaGraphWriter().writeWithProperties(g3, "./data/firstExample-graph3.graph");
+		//g.getEdges().add(999, 2);// add edge to src
+		Edges edges = g2.getEdges();
+		edges.add(992, 2);
+		edges.fill();
+		
+		new GtnaGraphWriter().writeWithProperties(g2, "./data/firstExample-graphedge.graph");
+		Instant finish2 = Instant.now();
+		long timeElapsed2 = Duration.between(start2, finish2).toMillis();
+		System.out.println("Time Elapsed for FindRoute and respond:"+timeElapsed2);
 		
 		
 	}
@@ -94,6 +126,9 @@ public class balancetrans {
 			Network nw1 = new ErdosRenyi(1000,25 , true, null);
 			Graph g = nw1.generate();
 			Edge[] e = g.generateEdges();
+			//Edge h = new Edge(999, 2);
+			 
+			
 			
 	
 			
@@ -129,4 +164,3 @@ public class balancetrans {
 	
 	
 	
-
