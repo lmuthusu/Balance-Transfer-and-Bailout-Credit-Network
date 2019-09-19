@@ -102,8 +102,12 @@ public class balancetrans {
 		e.printStackTrace();
 		}
 		Treeroute d = new TreerouteTDRAP();
+		Instant r1 = Instant.now();
 		int[] x = d.getRoute(997, 100, 0, g2, n);
 		new GtnaGraphWriter().writeWithProperties(g2, "./data/firstExample-graph2.graph");
+		Instant r2 = Instant.now();
+		long rr2 = Duration.between(r1, r2).toMillis();
+		System.out.println("Time Elapsed for FindRoute:"+rr2);
 		//g.getEdges().add(999, 2);// add edge to src
 		Edges edges = g2.getEdges();
 		edges.add(992, 2);
